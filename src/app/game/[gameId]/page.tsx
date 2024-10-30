@@ -91,7 +91,7 @@ const Game = ({ params }: { params: Promise<{ gameId: string }> }) => {
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-3 gap-4">
-          {board.map((cell, index) => (
+          {board?.map((cell, index) => (
             <Button
               key={index}
               variant="outline"
