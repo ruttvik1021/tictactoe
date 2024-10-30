@@ -29,6 +29,7 @@ const Game = ({ params }: { params: Promise<{ gameId: string }> }) => {
   }, [params]);
 
   useEffect(() => {
+    if (!gameId) return;
     // Initialize EventSource to listen to the server for board updates
     const eventSource = new EventSource(`/api/subscribe?gameId=${gameId}`);
 
