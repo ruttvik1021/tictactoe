@@ -7,8 +7,8 @@ import { Share2 } from "lucide-react";
 const Game = ({ params }: { params: Promise<{ gameId: string }> }) => {
   const [gameId, setGameId] = useState<string>("");
   const [board, setBoard] = useState(Array(9).fill(""));
-  const [currentPlayer, setCurrentPlayer] = useState("X");
   const [isMyTurn, setIsMyTurn] = useState(true);
+  const [myLogo, setMyLogo] = useState('X')
 
   const getGameId = async () => {
     const gameId = (await params).gameId || "";
@@ -20,8 +20,8 @@ const Game = ({ params }: { params: Promise<{ gameId: string }> }) => {
     const response = await fetch(`/api/getMoves?gameId=${id}`);
     const data = await response.json();
     setBoard(data.board);
-    setCurrentPlayer(data.player);
     setIsMyTurn(data.player === "X");
+    setMyLogo(data.initialised ? 'O' : 'X')
   };
 
   useEffect(() => {
@@ -50,16 +50,15 @@ const Game = ({ params }: { params: Promise<{ gameId: string }> }) => {
     if (!isMyTurn || board[index]) return;
 
     const newBoard = [...board];
-    newBoard[index] = currentPlayer;
+    newBoard[index] = myLogo;
 
     setBoard(newBoard);
-    setCurrentPlayer(currentPlayer === "X" ? "O" : "X");
     setIsMyTurn(false);
 
     await fetch("/api/makeMove", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ gameId, index, currentPlayer }),
+      body: JSON.stringify({ gameId, index, myLogo }),
     });
   };
 
@@ -79,6 +78,7 @@ const Game = ({ params }: { params: Promise<{ gameId: string }> }) => {
         </Button>
       </CardHeader>
       <CardContent>
+        <p>{isMyTurn ? myLogo : myLogo === "X" ? "O" : "X"}</p>
         <div className="grid grid-cols-3 gap-4">
           {board?.map((cell, index) => (
             <Button

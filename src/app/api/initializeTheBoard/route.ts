@@ -14,6 +14,7 @@ export async function GET(req: NextRequest) {
     gameId,
     board: Array(9).fill(""),
     player: "X",
+    initialised: true
   });
 
   return new Response(JSON.stringify(game.board), { status: 200 });
