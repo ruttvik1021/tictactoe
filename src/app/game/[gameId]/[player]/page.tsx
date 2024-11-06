@@ -48,7 +48,7 @@ const Game = ({ params }: { params: Promise<{ gameId: string, player: "O" | "X" 
     return () => {
       clearInterval(intervalId);
     };
-  }, [gameId]);
+  }, [gameId, winnerIs]);
 
   const handleClick = async (index: number) => {
     if (!isMyTurn || board[index]) return;
