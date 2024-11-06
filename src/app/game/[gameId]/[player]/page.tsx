@@ -11,6 +11,13 @@ const Game = ({ params }: { params: Promise<{ gameId: string, player: "O" | "X" 
   const [myLogo, setMyLogo] = useState('X')
   const [winnerIs, setWinnerIs] = useState(null)
 
+  const reInitialize = () => {
+    setBoard(Array(9).fill(""))
+    setIsMyTurn(true)
+    setMyLogo('X')
+    setWinnerIs(null)
+  }
+
   const getGameId = async () => {
     const gameId = (await params).gameId || "";
     getCurrentGameStatus(gameId);
@@ -72,8 +79,11 @@ const Game = ({ params }: { params: Promise<{ gameId: string, player: "O" | "X" 
     alert("Game link copied to clipboard!");
   };
 
-  const newGame = () => {
-    window.location.assign('https://tictactoe-livid-seven.vercel.app');
+  const newGame = async () => {
+    await fetch(`/api/newGame?gameId=${gameId}`, {
+      method: "GET"
+    });
+    reInitialize()
   }
 
   return (
@@ -105,7 +115,7 @@ const Game = ({ params }: { params: Promise<{ gameId: string, player: "O" | "X" 
           {winnerIs ? "Game Over" : isMyTurn ? "Your turn" : "Waiting for opponent..."}
         </p>
         <div className="mt-4 text-center">
-          {winnerIs && <button onClick={() => newGame()}>New Game</button>}
+          {winnerIs && myLogo === "X" && <button onClick={() => newGame()}>New Game</button>}
         </div>
       </CardContent>
     </Card>
