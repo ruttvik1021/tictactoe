@@ -85,7 +85,7 @@ const Game = ({ params }: { params: Promise<{ gameId: string, player: "O" | "X" 
           <span className="sr-only">Share</span>
         </Button>
       </CardHeader>
-      {winnerIs && <p>Congratulations Winner is {winnerIs}</p>}
+      {winnerIs && <p>{winnerIs === 'Draw' ? 'Game is Draw' : `Congratulations Winner is ${winnerIs}`}</p>}
       {winnerIs && <button onClick={() => newGame()}>New Game</button>}
       <CardContent>
         <p>{isMyTurn ? myLogo : myLogo === "X" ? "O" : "X"} is playing</p>

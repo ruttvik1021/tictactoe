@@ -19,6 +19,10 @@ function checkWinner(board: string[], player: string): boolean {
   );
 }
 
+function checkDraw(board: string[]): boolean {
+  return board.every(cell => cell === 'X' || cell === 'O');
+}
+
 export async function POST(req: NextRequest) {
   const { gameId, index, currentPlayer } = await req.json();
   
@@ -33,11 +37,12 @@ export async function POST(req: NextRequest) {
 
     
   const isWinner = checkWinner(game.board, currentPlayer);
+  const isDraw = checkDraw(game.board);
   const nextPlayer = currentPlayer === "X" ? "O" : "X";
 
     await collection.updateOne(
       { gameId },
-      { $set: { board: game.board, player: nextPlayer, winner: isWinner ? currentPlayer : ''  } },
+      { $set: { board: game.board, player: nextPlayer, winner: isWinner ? currentPlayer : isDraw ? 'Draw' : ''  } },
       { upsert: true }
     );
   }
