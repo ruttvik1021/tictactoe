@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Share2 } from "lucide-react";
 
-const Game = ({ params }: { params: Promise<{ gameId: string }> }) => {
+const Game = ({ params }: { params: Promise<{ gameId: string, player: "O" | "X" }> }) => {
   const [gameId, setGameId] = useState<string>("");
   const [board, setBoard] = useState(Array(9).fill(""));
   const [isMyTurn, setIsMyTurn] = useState(true);
@@ -18,10 +18,11 @@ const Game = ({ params }: { params: Promise<{ gameId: string }> }) => {
 
   const getCurrentGameStatus = async (id: string) => {
     const response = await fetch(`/api/getMoves?gameId=${id}`);
+    const logo = (await params).player || "";
     const data = await response.json();
     setBoard(data.board);
-    setIsMyTurn(data.player === "X");
-    setMyLogo(data.initialised ? 'O' : 'X')
+    setIsMyTurn(data.player === logo);
+    setMyLogo(logo)
   };
 
   useEffect(() => {
@@ -63,8 +64,8 @@ const Game = ({ params }: { params: Promise<{ gameId: string }> }) => {
   };
 
   const handleShare = () => {
-    const url = `${window.location.href}`;
-    navigator.clipboard.writeText(url);
+    const shareableUrl = `${window.location.origin}/game/${gameId}/${myLogo === 'X' ? "O" : "X"}`
+    navigator.clipboard.writeText(shareableUrl);
     alert("Game link copied to clipboard!");
   };
 

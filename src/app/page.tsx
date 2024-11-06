@@ -13,6 +13,6 @@ export default function TicTacToe() {
 
   useEffect(() => {
     initializeTheBoard();
-    redirect(`/game/${gameId}`);
+    redirect(`/game/${gameId}/X`);
   }, [gameId]);
 }
