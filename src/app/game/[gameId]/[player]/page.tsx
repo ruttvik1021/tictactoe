@@ -59,7 +59,7 @@ const Game = ({ params }: { params: Promise<{ gameId: string, player: "O" | "X" 
     await fetch("/api/makeMove", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ gameId, index, myLogo }),
+      body: JSON.stringify({ gameId, index, currentPlayer: myLogo }),
     });
   };
 
