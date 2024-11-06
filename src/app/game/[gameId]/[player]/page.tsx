@@ -33,11 +33,12 @@ const Game = ({ params }: { params: Promise<{ gameId: string, player: "O" | "X" 
 
   useEffect(() => {
     if (!gameId) return;
+    if (winnerIs) return;
 
     // Polling API every 1 second (1000ms)
     const intervalId = setInterval(async () => {
       try {
-        !winnerIs && getCurrentGameStatus(gameId)
+        getCurrentGameStatus(gameId)
       } catch (error) {
         console.error("Error polling the API:", error);
       }
