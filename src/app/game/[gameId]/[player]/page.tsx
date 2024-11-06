@@ -81,7 +81,7 @@ const Game = ({ params }: { params: Promise<{ gameId: string, player: "O" | "X" 
           <span className="sr-only">Share</span>
         </Button>
       </CardHeader>
-      {winnerIs ? <p>Congratulations Winner is {winnerIs}</p> :
+      {winnerIs && <p>Congratulations Winner is {winnerIs}</p>}
       <CardContent>
         <p>{isMyTurn ? myLogo : myLogo === "X" ? "O" : "X"} is playing</p>
         <div className="grid grid-cols-3 gap-4">
@@ -90,7 +90,7 @@ const Game = ({ params }: { params: Promise<{ gameId: string, player: "O" | "X" 
               key={index}
               variant="outline"
               className="h-20 text-4xl"
-              disabled={!isMyTurn || !!cell}
+              disabled={winnerIs || !isMyTurn || !!cell}
               onClick={() => handleClick(index)}
             >
               {cell}
@@ -101,7 +101,6 @@ const Game = ({ params }: { params: Promise<{ gameId: string, player: "O" | "X" 
           {isMyTurn ? "Your turn" : "Waiting for opponent..."}
         </p>
       </CardContent>
-      }
     </Card>
   );
 };
