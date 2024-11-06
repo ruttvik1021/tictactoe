@@ -97,7 +97,7 @@ const Game = ({ params }: { params: Promise<{ gameId: string, player: "O" | "X" 
       </CardHeader>
       {winnerIs && <p>{winnerIs === 'Draw' ? 'Game is Draw' : `Congratulations Winner is ${winnerIs}`}</p>}
       <CardContent>
-        <p>{isMyTurn ? myLogo : myLogo === "X" ? "O" : "X"} is playing</p>
+        {!winnerIs && <p>{isMyTurn ? myLogo : myLogo === "X" ? "O" : "X"} is playing</p> }
         <div className="grid grid-cols-3 gap-4">
           {board?.map((cell, index) => (
             <Button
