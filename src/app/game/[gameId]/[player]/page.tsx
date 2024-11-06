@@ -9,6 +9,7 @@ const Game = ({ params }: { params: Promise<{ gameId: string, player: "O" | "X" 
   const [board, setBoard] = useState(Array(9).fill(""));
   const [isMyTurn, setIsMyTurn] = useState(true);
   const [myLogo, setMyLogo] = useState('X')
+  const [winnerIs, setWinnerIs] = useState(null)
 
   const getGameId = async () => {
     const gameId = (await params).gameId || "";
@@ -23,6 +24,7 @@ const Game = ({ params }: { params: Promise<{ gameId: string, player: "O" | "X" 
     setBoard(data.board);
     setIsMyTurn(data.player === logo);
     setMyLogo(logo)
+    setWinnerIs(data.winner)
   };
 
   useEffect(() => {
@@ -35,7 +37,7 @@ const Game = ({ params }: { params: Promise<{ gameId: string, player: "O" | "X" 
     // Polling API every 1 second (1000ms)
     const intervalId = setInterval(async () => {
       try {
-        getCurrentGameStatus(gameId)
+        !winnerIs && getCurrentGameStatus(gameId)
       } catch (error) {
         console.error("Error polling the API:", error);
       }
@@ -78,15 +80,16 @@ const Game = ({ params }: { params: Promise<{ gameId: string, player: "O" | "X" 
           <span className="sr-only">Share</span>
         </Button>
       </CardHeader>
+      {winnerIs ? <p>Congratulations Winner is {winnerIs}</p> :
       <CardContent>
-        <p>{isMyTurn ? myLogo : myLogo === "X" ? "O" : "X"}</p>
+        <p>{isMyTurn ? myLogo : myLogo === "X" ? "O" : "X"} is playing</p>
         <div className="grid grid-cols-3 gap-4">
           {board?.map((cell, index) => (
             <Button
               key={index}
               variant="outline"
               className="h-20 text-4xl"
-              // disabled={!isMyTurn || !!cell}
+              disabled={!isMyTurn || !!cell}
               onClick={() => handleClick(index)}
             >
               {cell}
@@ -97,6 +100,7 @@ const Game = ({ params }: { params: Promise<{ gameId: string, player: "O" | "X" 
           {isMyTurn ? "Your turn" : "Waiting for opponent..."}
         </p>
       </CardContent>
+      }
     </Card>
   );
 };

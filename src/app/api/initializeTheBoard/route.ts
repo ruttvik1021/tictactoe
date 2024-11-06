@@ -5,6 +5,7 @@ import { connectToDatabase } from "../../../lib/mongodb";
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const gameId = searchParams.get("gameId");
+  
 
   // Connect to MongoDB
   await connectToDatabase();
@@ -14,7 +15,7 @@ export async function GET(req: NextRequest) {
     gameId,
     board: Array(9).fill(""),
     player: "X",
-    initialised: true
+    winner: ""
   });
 
   return new Response(JSON.stringify(game.board), { status: 200 });
