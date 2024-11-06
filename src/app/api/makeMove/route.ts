@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
 
     await collection.updateOne(
       { gameId },
-      { $set: { board: game.board } },
+      { $set: { board: game.board, player: currentPlayer === "X" ? "O" : "X" } },
       { upsert: true }
     );
   }
