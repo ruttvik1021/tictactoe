@@ -72,6 +72,10 @@ const Game = ({ params }: { params: Promise<{ gameId: string, player: "O" | "X" 
     alert("Game link copied to clipboard!");
   };
 
+  const newGame = () => {
+    window.location.assign('https://tictactoe-livid-seven.vercel.app');
+  }
+
   return (
     <Card className="w-full max-w-md mx-auto">
       <CardHeader className="flex flex-row items-center justify-between">
@@ -82,6 +86,7 @@ const Game = ({ params }: { params: Promise<{ gameId: string, player: "O" | "X" 
         </Button>
       </CardHeader>
       {winnerIs && <p>Congratulations Winner is {winnerIs}</p>}
+      {winnerIs && <button onClick={() => newGame()}>New Game</button>}
       <CardContent>
         <p>{isMyTurn ? myLogo : myLogo === "X" ? "O" : "X"} is playing</p>
         <div className="grid grid-cols-3 gap-4">
