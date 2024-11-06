@@ -12,5 +12,5 @@ export async function GET(req: NextRequest) {
   
   const game = await collection.findOne({ gameId });
 
-  return new Response(JSON.stringify(game.board), { status: 200 });
+  return new Response(JSON.stringify(game), { status: 200 });
 }
