@@ -55,12 +55,11 @@ const Game = ({ params }: { params: Promise<{ gameId: string, player: "O" | "X" 
 
     setBoard(newBoard);
     setIsMyTurn(false);
-    const logo = (await params).player === 'X' ? "O" : "X";
 
     await fetch("/api/makeMove", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ gameId, index, logo }),
+      body: JSON.stringify({ gameId, index, myLogo }),
     });
   };
 
