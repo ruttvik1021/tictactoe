@@ -30,31 +30,19 @@ const Game = ({ params }: { params: Promise<{ gameId: string }> }) => {
 
   useEffect(() => {
     if (!gameId) return;
-    // Initialize EventSource to listen to the server for board updates
-    const eventSource = new EventSource(`/api/subscribe?gameId=${gameId}`);
 
-    console.log("EventSource initialized", eventSource);
+    // Polling API every 1 second (1000ms)
+    const intervalId = setInterval(async () => {
+      try {
+        getCurrentGameStatus(gameId)
+      } catch (error) {
+        console.error("Error polling the API:", error);
+      }
+    }, 1000);
 
-    eventSource.onopen = () => {
-      console.log("EventSource connection opened");
-    };
-
-    // Handle incoming messages
-    eventSource.onmessage = (event) => {
-      console.log("Event received:", event.data);
-      const updatedBoard = JSON.parse(event.data);
-      setBoard(updatedBoard);
-    };
-
-    // Handle errors (e.g., when the connection closes or there’s a network issue)
-    eventSource.onerror = () => {
-      console.error("EventSource failed");
-      eventSource.close();
-    };
-
-    // Clean up the connection when the component is unmounted
+    // Clean up the interval when the component is unmounted or gameId changes
     return () => {
-      eventSource.close();
+      clearInterval(intervalId);
     };
   }, [gameId]);
 
