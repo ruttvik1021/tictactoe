@@ -86,7 +86,6 @@ const Game = ({ params }: { params: Promise<{ gameId: string, player: "O" | "X" 
         </Button>
       </CardHeader>
       {winnerIs && <p>{winnerIs === 'Draw' ? 'Game is Draw' : `Congratulations Winner is ${winnerIs}`}</p>}
-      {winnerIs && <button onClick={() => newGame()}>New Game</button>}
       <CardContent>
         <p>{isMyTurn ? myLogo : myLogo === "X" ? "O" : "X"} is playing</p>
         <div className="grid grid-cols-3 gap-4">
@@ -103,8 +102,11 @@ const Game = ({ params }: { params: Promise<{ gameId: string, player: "O" | "X" 
           ))}
         </div>
         <p className="mt-4 text-center">
-          {isMyTurn ? "Your turn" : "Waiting for opponent..."}
+          {winnerIs ? "Game Over" : isMyTurn ? "Your turn" : "Waiting for opponent..."}
         </p>
+        <div className="mt-4 text-center">
+          {winnerIs && <button onClick={() => newGame()}>New Game</button>}
+        </div>
       </CardContent>
     </Card>
   );
